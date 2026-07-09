@@ -70,6 +70,11 @@ class LexicalLayer:
         """Add a term to the lexical layer"""
         self.terms[term.canonical_form] = term
         self.reverse_index[term.canonical_form] = term.canonical_form
+
+
+
+
+        
         for alias in term.aliases:
             self.reverse_index[alias] = term.canonical_form
     
