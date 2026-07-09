@@ -14,7 +14,7 @@ from core.ontology_engine import (
 )
 from core.visual_extractor import VisualExtractor
 from core.learning_system import LearningEngine, Feedback, FeedbackType, FeedbackSource
-from core.sacalable_processor import ScalableProcessingPipeline
+from core.scalable_processor import ScalableProcessingPipeline
 
 
 logging.basicConfig(level=logging.INFO)
