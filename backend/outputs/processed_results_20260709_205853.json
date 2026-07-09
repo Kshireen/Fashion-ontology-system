@@ -1,0 +1,168 @@
+{
+  "metadata": {
+    "source_file": "D:\\BOOKS\\Machine Learning\\FS\\fashion-ontology-engine\\data\\raw\\Shirts.csv",
+    "processing_date": "20260709_205853",
+    "total_products": 20
+  },
+  "results": [
+    {
+      "product_id": "0a91b9b11129a96345e5e0102f4acfef0042d326fd455ba4d513c3c259bf22f8",
+      "category": "Shirts",
+      "features": {
+        "pattern": "pattern_floral"
+      },
+      "success": true
+    },
+    {
+      "product_id": "50f1af0599b02b44f2038b87f52a2d2398dec335df565e352e2cfcdd97e601d5",
+      "category": "Shirts",
+      "features": {
+        "length": "length_mini",
+        "fit": "fit_oversized"
+      },
+      "success": true
+    },
+    {
+      "product_id": "4d7436eb6fa8885eafda12d1416d44fd53589ac248ad9272f1cf6bfb663c44fc",
+      "category": "Shirts",
+      "features": {},
+      "success": true
+    },
+    {
+      "product_id": "bdaeed49029a7f57001dfc3d498ebb84190fa758bb82327460e80bb899297953",
+      "category": "Shirts",
+      "features": {
+        "fit": "fit_oversized"
+      },
+      "success": true
+    },
+    {
+      "product_id": "f8f104de4aac1196ae84d86294c60cd165d8c64dfb9a4c30e485948ffaabdb6d",
+      "category": "Shirts",
+      "features": {},
+      "success": true
+    },
+    {
+      "product_id": "4dad1812bcd4e816680b3af9953ea987a20458db9146d2af2a1029663b086541",
+      "category": "Shirts",
+      "features": {
+        "fit": "fit_oversized"
+      },
+      "success": true
+    },
+    {
+      "product_id": "149da5da5c477343d6457b9f3ea4c4a0ea15c8d9c87664a8b94ba7c4b7111974",
+      "category": "Shirts",
+      "features": {
+        "length": "length_mini",
+        "fit": "fit_oversized"
+      },
+      "success": true
+    },
+    {
+      "product_id": "6c8b40f1d88bbdb59e02eca62dd70488e7cd8d49c93fdd7dc242d3746c05ce6e",
+      "category": "Shirts",
+      "features": {
+        "length": "length_mini",
+        "fit": "fit_oversized"
+      },
+      "success": true
+    },
+    {
+      "product_id": "6ebcdab56863f347b058339fb0fc552cf265770396c30a87f9981a7a3f1cebc3",
+      "category": "Shirts",
+      "features": {
+        "fit": "fit_oversized",
+        "material": "material_denim"
+      },
+      "success": true
+    },
+    {
+      "product_id": "2e9ad536ab61f79ad495294218397b4cb1b0a02c82c7b69b356fe9cde7ebf93a",
+      "category": "Shirts",
+      "features": {
+        "length": "length_mini"
+      },
+      "success": true
+    },
+    {
+      "product_id": "b20b25e6ccc32ca26766c1248f03fef8bd84c95c3d3415b0aa2471b1d4fdb80f",
+      "category": "Shirts",
+      "features": {
+        "length": "length_maxi",
+        "fit": "fit_oversized"
+      },
+      "success": true
+    },
+    {
+      "product_id": "adb31eaed9cf9aa959d43f13d296b9e677a8c3b2d2a1dd4e8b329f6f809b4f99",
+      "category": "Shirts",
+      "features": {
+        "length": "length_mini",
+        "fit": "fit_oversized"
+      },
+      "success": true
+    },
+    {
+      "product_id": "7869b10299ef30f007d9bfb88c26116bd9fba0afb4d678ad673b3fa53039f98d",
+      "category": "Shirts",
+      "features": {
+        "fit": "fit_oversized"
+      },
+      "success": true
+    },
+    {
+      "product_id": "20e56a0430e27ac58f583973e045feb340f099824039b5705d8fd22600657da3",
+      "category": "Shirts",
+      "features": {
+        "length": "length_mini"
+      },
+      "success": true
+    },
+    {
+      "product_id": "4ba532c94f87e49de888bb2b6432ddfd7d2a43e005bc664a4071d839892a5d39",
+      "category": "Shirts",
+      "features": {},
+      "success": true
+    },
+    {
+      "product_id": "0683950dc578f18e50146e47f23478ede1d8e863811e1fdcb86126fa8017e1c0",
+      "category": "Shirts",
+      "features": {
+        "fit": "fit_oversized",
+        "material": "material_denim",
+        "pattern": "pattern_floral"
+      },
+      "success": true
+    },
+    {
+      "product_id": "a7c6d5111d3c672a3d8a64b18efc6a5c919cdda9ceace66ed0f0aa388d19846d",
+      "category": "Shirts",
+      "features": {},
+      "success": true
+    },
+    {
+      "product_id": "babb08cafc40326f880e151289318192358503e87f81026e0d48ab23f15ca544",
+      "category": "Shirts",
+      "features": {
+        "length": "length_mini",
+        "fit": "fit_oversized"
+      },
+      "success": true
+    },
+    {
+      "product_id": "db29023d1e6059dc79d7c6abac74006990249bedc93158b4f3d91b45a580630c",
+      "category": "Shirts",
+      "features": {},
+      "success": true
+    },
+    {
+      "product_id": "fed1de23d7f1ea578ff8b3a328ae2efbe290ce4182b6b629d87612e14dc78014",
+      "category": "Shirts",
+      "features": {
+        "length": "length_mini"
+      },
+      "success": true
+    }
+  ]
+}

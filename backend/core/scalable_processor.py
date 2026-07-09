@@ -5,6 +5,10 @@ Handles large-scale batch processing with optimization
 Supports 10+ categories with category-specific processing
 """
 
+from unittest import result
+
+from unittest import result
+
 import pandas as pd
 import numpy as np
 from typing import Dict, List, Optional, Iterator
@@ -111,12 +115,18 @@ class BatchProcessor:
                 # Get category config
                 category_id = str(row.get('category_id', ''))
                 config = category_configs.get(category_id)
+
+                desc = row.get('description')
+                if pd.isna(desc) or str(desc).strip() == '' or str(desc).strip().lower() == 'nan':
+                    desc = row.get('meta_info', '')
+                if pd.isna(desc):
+                    desc = ''
                 
                 # Prepare product data
                 product_data = {
                     'product_id': str(row.get('product_id', f'P{idx}')),
                     'product_name': str(row.get('product_name', '')),
-                    'description': str(row.get('description', '')),
+                    'description': str(desc or row.get('meta_info', '')),
                     'category_id': category_id,
                     'category_name': str(row.get('category_name', '')),
                     'department_id': str(row.get('department_id', '')),
@@ -124,6 +134,8 @@ class BatchProcessor:
                     'feature_image': str(row.get('feature_image', '')),
                     'meta_info': str(row.get('meta_info', ''))
                 }
+                print(product_data["product_name"])
+                print(product_data["description"])
                 
                 # Process based on category config
                 if config:
@@ -133,13 +145,19 @@ class BatchProcessor:
                 else:
                     result = extractor.extract_features(product_data)
                 
+                feature_count = 0
+
+                if hasattr(result, "features"):
+                    feature_count = len(result.features)
+                    self.stats.features_extracted += feature_count
+
                 results.append({
-                    'product_id': product_data['product_id'],
-                    'category': product_data['category_name'],
-                    'features': result.features if hasattr(result, 'features') else result,
-                    'success': True
+                    "product_id": product_data["product_id"],
+                    "category": product_data["category_name"],
+                    "features": result.features if hasattr(result, "features") else result,
+                    "success": True,
                 })
-                
+
                 self.stats.processed += 1
                 
             except Exception as e:

@@ -286,8 +286,19 @@ class MultimodalFeatureExtractor:
         """
         
         # Step 1: Lexical extraction
-        text = f"{product_data.get('name', '')} {product_data.get('description', '')}"
+        # text = f"{product_data.get('name', '')} {product_data.get('description', '')}"
+        text = " ".join(filter(None, [
+            product_data.get("product_name", ""),
+            product_data.get("description", ""),
+            product_data.get("meta_info", ""),
+        ]))
+
+        print("=" * 80)
+        print("TEXT SENT TO LEXICAL:")
+        print(repr(text))
+
         lexical_terms = self.lexical_layer.extract_terms(text)
+        print("LEXICAL TERMS:", lexical_terms)
         
         # Step 2: Concept mapping
         feature_map = {}
