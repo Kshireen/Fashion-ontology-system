@@ -117,15 +117,38 @@ class LexicalLayer:
     #             i += 1
     #     return list(set(terms))
 
+    def has_term(self, text: str) -> bool:
+        """
+        Check whether a lexical term (or alias) exists in the vocabulary.
+        """
+        normalized = LexicalTerm._normalize(text)
+        return normalized in self.reverse_index
+    
+    
+
     def extract_terms(self, text: str) -> List[str]:
         """
-            Extract lexical terms using greedy n-gram matching.
+            Extract lexical terms using greedy longest-match.
 
-            Priority:
-                1. Trigrams
-                2. Bigrams
-                3. Unigrams
-        """
+                 Priority:
+                    1. Trigram
+                    2. Bigram
+                    3. Unigram
+
+                 Examples
+                --------
+                    "Three Quarter Sleeve Floral Shirt"
+                         -> ["three_quarter_sleeve", "floral"]
+
+                    "Short Sleeve Loose Fit Shirt"
+                        -> ["short_sleeve", "loose_fit"]
+
+                    "Long Sleeve Button Up Casual Shirt"
+                        -> ["long_sleeve", "button_up"]
+
+                    "Oversized Denim Jacket"
+                        -> ["oversized_fit", "denim"]
+         """
 
         import re
 
@@ -137,43 +160,40 @@ class LexicalLayer:
 
         while i < len(words):
 
-            # ---------------------------------------------------------
-            # Try trigram
-            # ---------------------------------------------------------
+            # ==========================================================
+            # 1. Try Trigram
+            # ==========================================================
             if i + 2 < len(words):
                 trigram = f"{words[i]}_{words[i+1]}_{words[i+2]}"
-                canonical = self.normalize(trigram)
 
-                if canonical:
-                    terms.append(canonical)
+                if self.has_term(trigram):
+                    terms.append(self.normalize(trigram))
                     i += 3
                     continue
 
-            # ---------------------------------------------------------
-            # Try bigram
-            # ---------------------------------------------------------
+            # ==========================================================
+            # 2. Try Bigram
+            # ==========================================================
             if i + 1 < len(words):
                 bigram = f"{words[i]}_{words[i+1]}"
-                canonical = self.normalize(bigram)
 
-                if canonical:
-                    terms.append(canonical)
+                if self.has_term(bigram):
+                    terms.append(self.normalize(bigram))
                     i += 2
                     continue
 
-            # ---------------------------------------------------------
-            # Try unigram
-            # ---------------------------------------------------------
-            canonical = self.normalize(words[i])
+            # ==========================================================
+            # 3. Try Unigram
+            # ==========================================================
+            unigram = words[i]
 
-            if canonical:
-                terms.append(canonical)
+            if self.has_term(unigram):
+                terms.append(self.normalize(unigram))
 
             i += 1
 
         # Remove duplicates while preserving order
         return list(dict.fromkeys(terms))
-
 # LAYER 2: CONCEPT LAYER (ONTOLOGY)
 
 class ConceptType(Enum):
@@ -347,80 +367,56 @@ class MultimodalFeatureExtractor:
         self.concept_layer = ConceptLayer()
         self.instance_layer = InstanceLayer()
     
-    # def extract_features(self, product_data: Dict) -> ProductInstance:
-    #     """
-    #     Extract features from product data (text + image)
-    #     Steps:
-    #     1. Extract raw terms from text (Lexical Layer)
-    #     2. Map terms to concepts (Concept Layer)
-    #     3. Create product instance (Instance Layer)
-    #     """
+    def extract_features(self, product_data: Dict) -> ProductInstance:
+        """
+        Extract features from product data (text + image)
+        Steps:
+        1. Extract raw terms from text (Lexical Layer)
+        2. Map terms to concepts (Concept Layer)
+        3. Create product instance (Instance Layer)
+        """
         
-    #     # Step 1: Lexical extraction
-    #     # text = f"{product_data.get('name', '')} {product_data.get('description', '')}"
-    #     text = " ".join(filter(None, [
-    #         product_data.get("product_name", ""),
-    #         product_data.get("description", ""),
-    #         product_data.get("meta_info", ""),
-    #     ]))
+        # Step 1: Lexical extraction
+        # text = f"{product_data.get('name', '')} {product_data.get('description', '')}"
+        text = " ".join(filter(None, [
+            product_data.get("product_name", ""),
+            product_data.get("description", ""),
+            product_data.get("meta_info", ""),
+        ]))
 
-    #     print("=" * 80)
-    #     print("TEXT SENT TO LEXICAL:")
-    #     print(repr(text))
+        print("=" * 80)
+        print("TEXT SENT TO LEXICAL:")
+        print(repr(text))
 
-    #     lexical_terms = self.lexical_layer.extract_terms(text)
-    #     print("LEXICAL TERMS:", lexical_terms)
+        lexical_terms = self.lexical_layer.extract_terms(text)
+        print("LEXICAL TERMS:", lexical_terms)
         
-    #     # Step 2: Concept mapping
-    #     feature_map = {}
-    #     for term in lexical_terms:
-    #         concepts = self.concept_layer.find_concept_by_lexical(term)
-    #         for concept_id in concepts:
-    #             concept = self.concept_layer.concepts[concept_id]
-    #             if concept.parent and concept.parent in self.concept_layer.concepts:
-    #                 parent_concept = self.concept_layer.concepts[concept.parent]
-    #                 feature_map[parent_concept.id] = concept_id
+        # Step 2: Concept mapping
+        feature_map = {}
+        for term in lexical_terms:
+            concepts = self.concept_layer.find_concept_by_lexical(term)
+            for concept_id in concepts:
+                concept = self.concept_layer.concepts[concept_id]
+                if concept.parent and concept.parent in self.concept_layer.concepts:
+                    parent_concept = self.concept_layer.concepts[concept.parent]
+                    feature_map[parent_concept.id] = concept_id
         
-    #     # Step 3: Create instance
-    #     instance = ProductInstance(
-    #         id=product_data['product_id'],
-    #         name=product_data.get('product_name', ''),
-    #         category_id=product_data.get('category_id', ''),
-    #         department_id=product_data.get('department_id', ''),
-    #         brand=product_data.get('brand', ''),
-    #         description=product_data.get('description', ''),
-    #         image_url=product_data.get('feature_image', ''),
-    #         features=feature_map,
-    #         raw_textual_features=lexical_terms
-    #     )
+        # Step 3: Create instance
+        instance = ProductInstance(
+            id=product_data['product_id'],
+            name=product_data.get('product_name', ''),
+            category_id=product_data.get('category_id', ''),
+            department_id=product_data.get('department_id', ''),
+            brand=product_data.get('brand', ''),
+            description=product_data.get('description', ''),
+            image_url=product_data.get('feature_image', ''),
+            features=feature_map,
+            raw_textual_features=lexical_terms
+        )
         
-    #     self.instance_layer.add_instance(instance)
-    #     return instance
+        self.instance_layer.add_instance(instance)
+        return instance
     
-    def extract_terms(self, text: str) -> List[str]:
-        text_lower = text.lower()
-        words = text_lower.replace(',', ' ').split()
-        terms = []
-        matched_positions = set()
-    
-        # Step 1: Bigram (phrase) matching pehle — longer matches priority
-        for i in range(len(words) - 1):
-            bigram = f"{words[i]}_{words[i+1]}"
-            canonical = self.normalize(bigram)
-            if canonical:
-                terms.append(canonical)
-                matched_positions.add(i)
-            matched_positions.add(i + 1)
-    
-       # Step 2: Sirf unmatched words ke liye unigram fallback
-        for i, word in enumerate(words):
-            if i not in matched_positions:
-               canonical = self.normalize(word)
-            if canonical:
-                terms.append(canonical)
-    
-        return list(set(terms))
-
 
     def get_ontology_summary(self) -> Dict:
         """Get summary of the ontology structure"""
